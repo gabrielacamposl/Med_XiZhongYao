@@ -44,7 +44,7 @@ const AppTopbar = forwardRef((props, ref) => {
     <div className="layout-topbar">
       <ConfirmDialog />
       <Link href="/pages/dashboard" className="layout-topbar-logo">
-        <img src={`/layout/images/logo-${layoutConfig.colorScheme !== 'light' ? 'white' : 'dark'}.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+        <img src={`/layout/images/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
         <span>Administrador</span>
       </Link>
 

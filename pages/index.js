@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import AppConfig from '@/layout/AppConfig';
+import AppConfig from '@/layout/AppConfig';;
+import { Divider } from 'primereact/divider';
+import { classNames } from 'primereact/utils';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
+
 
 import axios from 'axios';
 import { Button } from 'primereact/button';
@@ -12,18 +16,25 @@ import { InputText } from 'primereact/inputtext';
 
 import * as components from './components';
 import Image from 'next/image';
-import myImage from '../imagenes/login/loto.jpg';
-import myImage1 from '../imagenes/login/flower1.jpeg';
-import loto from '../imagenes/login/principal1.png';
+import myImage from '../imagenes/login/green2.png';
+import myImage1 from '../imagenes/login/green.png';
+import myImage2 from '../imagenes/login/LogoLogin.png';
+import myImage3 from '../imagenes/login/sourceResetPass.png';
+import loto from '../imagenes/login/XZY.png';
 import styles from '../styles/styles.module.css';
-import { iniciarSesion, resetearPassword } from '@/helpers/constantes/links';
+import { iniciarSesion, resetearPassword } from '@/components/mensajesNotificaciones/links';
 import {
   campoVacio, camposVacios, emailInvalido, passwordInvalido, resetearExitoso
-} from '@/helpers/constantes/mensajes';
+} from '@/components/mensajesNotificaciones/mensajes';
+{/*import { SearchParamsContext } from 'next/dist/shared/lib/hooks-client-context.shared-runtime';*/}
 
 
 
-export default function Home() {
+
+export default function Login() {
+
+
+ 
   //----------------| Lista de variables |----------------
   const [signIn, toggle] = useState(true);
   // --> Campos de entrada
@@ -72,14 +83,15 @@ export default function Home() {
     setMensajeRespuesta('')
     //--> Validar envio a back-end
     try {
-      const respuesta = await axios.post(iniciarSesion, { emailAdministrador: email, passwordAdministrador: password })
+      const respuesta = await axios.post(iniciarSesion, { emailPaciente: email, passwordPaciente: password })
       if (respuesta.status === 200) {
-        localStorage.setItem('token', respuesta.data.token);
-        // console.log(respuesta.data.token)
+        // console.log(respuesta.data.username)
+     //   localStorage.setItem('nombre', respuesta.data.username)
+        localStorage.setItem('token', respuesta.data.token)
         setTimeout(() => { router.push('/pages/dashboard') }, 1000)
       }
     } catch (error) {
-      setMensajeRespuesta(error.response.data.msg)
+   //   setMensajeRespuesta(error.response.data.msg)
       setEstiloRespuesta('error')
       setEstiloEmail('p-invalid')
       setEstiloPassword('p-invalid')
@@ -104,10 +116,8 @@ export default function Home() {
       return
     } else { setEstiloEmailRec('') }
 
-    // router.push('/pages/pantallainicio/tokenresetear')
-
     try {
-      const respuesta = await axios.post(resetearPassword, { emailAdministrador: emailrecuperar })
+      const respuesta = await axios.post(resetearPassword, { emailPaciente: emailrecuperar })
       if (respuesta.status === 200) {
         // --> Limpiar variables
         setEmailrecuperar('')
@@ -128,34 +138,113 @@ export default function Home() {
     }
   }
 
+  
+  const Topbar = () => {
+    return (
+      <div className="topbar">
+        <div className='surface-overlay py-3 px-6 shadow-2 flex align-items-center justify-content-between relative lg:static'>
+          <img src={`/layout/images/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+        <span>XiZhongYao</span>
+        <a className='p-ripple cursor-pointer block lg:hidden text-700'>
+          <i className='pi pi-bars text-4x1'> 
+          </i>
+        </a>
+        <div className='align-items-center flex-grown-1 hidden lg:flex absolute lg:static w-full surface-overlay left-0 top-100 px-6 lg:px-0 z-2 shadow-2 lg:shadow-none'>
+          <ul className='list-none p-0 m-0 flex lg:align-items-center text-900 select-none flex-column lg:flex-row cursor-pointer lg:w-4'></ul>
+        </div>
+        <div className='flex justify-content-end lg:text-right lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0 lg:w-4'>
+          <Button className=' p-button p-component font-bold p-button-outolined p-button-rounded  '  onClick={() => { router.push('/login') }}> Iniciar Sesión</Button>
+          <Button className='p-button p-component font-bold ml-3 p-button-rounded'>¿Eres Doctor?</Button>
+        </div>
+
+        </div>
+        
+      </div>
+    );
+  }
+
+  const Footer = () => {
+    return (
+      <div className="footer">
+        <div className='grid grid-nogutter surface-section px-4 py-4 md:px-6 lg:px-8 border-top-1 surface-border'>
+          <div className='col-12 lg:col-6 lg:border-right-1 surface-border'>
+          <img src={`/layout/images/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+          <span className='text-900 block mt-4 mr-3'>KJVKJNVFJVnjkvfvkjew v v kjv c skcbckbvubawnjvb s</span>
+          <span className='text-500 block mt-4'> 2023, XiZhongYao by Dreamteam</span>
+          </div>
+          <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
+            <span className='text-900 text-xl font-medium block'>Company</span>
+            <ul className='list-none p-0'>
+              <li>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>About XiZhongYao</a>
+              </li>
+              <li>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Factories</a>
+              </li>
+            </ul>
+          </div>
+          <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
+            <span className='text-900 text-xl font-medium block'>Account</span>
+            <ul className='list-none p-0'>
+              <li>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>About XiZhongYao</a>
+              </li>
+              <li>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Factories</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="surface-900 py-6 lg:py-4 md:px-6 lg:px-8 flex flex-column lg:flex-row justify-content-between align-items-center">
+          <ul class="list-none p-0 mb-0 flex flex-column md:flex-row flex-order-1 lg:flex-order-0 mt-4 lg:mt-0">
+            <li class="mr-4 mt-3 lg:mt-0">
+              <a tabindex="0" class="cursor-pointer text-0">Investor Relations</a>
+              </li>
+              <li class="mr-4 mt-3 lg:mt-0">
+                <a tabindex="0" class="cursor-pointer text-0">Data Privacy</a>
+                </li>
+                <li class="mr-4 mt-3 lg:mt-0">
+                  <a tabindex="0" class="cursor-pointer text-0">Terms of Service</a>
+                  </li>
+                  <li class="mr-4 mt-3 lg:mt-0">
+                    <a tabindex="0" class="cursor-pointer text-0">Legal Information</a>
+                    </li>
+                    </ul>
+                    <div class="flex align-items-center flex-order-0 lg:flex-order-1">
+                      <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block"> 
+                      <i class="pi pi-facebook surface-section p-1 text-sm border-circle text-900">
+                      </i>
+                      </a>
+                      <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
+                        <i class="pi pi-twitter surface-section p-1 text-sm border-circle text-900"></i>
+                      </a>
+                        <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
+                          <i class="pi pi-youtube surface-section p-1 text-sm border-circle text-900"></i>
+                        </a>
+                          <a tabindex="0" class="cursor-pointer lg:mt-0 block">
+                            <i class="pi pi-google surface-section p-1 text-sm border-circle text-900">
+                            </i>
+                          </a>
+                      </div>
+          </div>
+        
+      </div>
+    );
+  }
+  
 
   //---------------------------| Valor que regresara |---------------------------
   return (
     <>
-      <Head>
-        <title>Inicio de Sesión</title>
-        <meta charSet="UTF-8" />
-        <meta name="description" content="Interfaz para administrar la pagina jardin del eden" />
-        <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <meta property="og:type" content="website"></meta>
-        <meta property="og:title" content="Sakai by PrimeReact | Free Admin Template for NextJS"></meta>
-        <meta property="og:url" content="https://www.primefaces.org/sakai-react"></meta>
-        <meta property="og:description" content="The ultimate collection of design-agnostic, flexible and accessible React UI Components." />
-        <meta property="og:image" content="https://www.primefaces.org/static/social/sakai-nextjs.png"></meta>
-        <meta property="og:ttl" content="604800"></meta>
-        <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
-      </Head>
-
-
+       <Topbar />
       <components.Container className={`card m-auto mt-8 ${styles.card}`} >
         <components.SignUpContainer className={`card ${styles.card}`} signinIn={signIn}>
           <components.Form  >
 
-
             <h1 className={`font-bold text-center`}>Recuperar contraseña</h1>
-            <components.Parrafo>Ingrese el correo asociado a su cuenta</components.Parrafo>
-            <label htmlFor="email1" className="block text-900 ">E-mail</label>
+            <components.Parrafo>Ingresa el correo asociado a tu cuenta</components.Parrafo>
+            <label htmlFor="email1" className="block text-900 ">Email</label>
             <InputText
               inputid="email1" value={emailrecuperar} onChange={(e) => setEmailrecuperar(e.target.value)}
               type="text" placeholder="Email address" className={`block text-900  mb-2 w-full p-3  ${estiloEmailRec}`}
@@ -167,7 +256,7 @@ export default function Home() {
                 </div>
               )}
 
-            <Button label="Enviar" className="w-full p-3 text-xl" title="enviar" onClick={recuperarPassword} />
+            <Button label="Enviar" className="w-full p-3 text-xl cursor-pointer" title="enviar" onClick={recuperarPassword} />
             <components.Anchor onClick={() => toggle(true)}  >Iniciar Sesión</components.Anchor>
 
 
@@ -176,12 +265,13 @@ export default function Home() {
 
 
         <components.SignInContainer className={`card ${styles.card}`} signinIn={signIn}>
+          
 
           <components.Form >
-            <Image src={loto} className={styles['logo']} alt="Mi imagen" priority={true} />
-            <h1 className={`font-bold text-center`}>Iniciar Sesión</h1>
+            <Image src={loto} className={styles['logo']} alt="Mi imagen" priority={true} style={{ width: '50px', height: '50px' }} />
+            <h1 className={`font-bold text-center cursor-pointer`}>Iniciar Sesión</h1>
 
-            <label htmlFor="email1" className="block text-900 ">Correo electrónico</label>
+            <label htmlFor="email1" className="block text-900 ">Correo</label>
             <InputText
               inputid="email1" value={email} onChange={(e) => setEmail(e.target.value)}
               type="text" placeholder="Correo electrónico" className={`block text-900  mb-2 w-full p-3  ${estiloEmail}`}
@@ -193,7 +283,7 @@ export default function Home() {
               feedback={false} className="w-full " inputClassName={`w-full p-3 md:w-30rem  ${estiloPassword}`} />
 
             <components.Parrafo onClick={() => toggle(false)} className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>¿Olvidaste tu contraseña?</components.Parrafo>
-            <Button label="Iniciar Sesion" className="w-full p-3 mb-3 text-xl" onClick={validarEnvio} />
+            <Button label="Iniciar Sesión" className="w-full p-3 mb-3 text-xl" onClick={validarEnvio} />
 
             {mensajeRespuesta &&
               (<Message severity={estiloRespuesta} text={mensajeRespuesta} />)
@@ -209,10 +299,6 @@ export default function Home() {
 
           </components.Form>
         </components.SignInContainer>
-
-
-
-
         <components.OverlayContainer signinIn={signIn}>
           <components.Overlay signinIn={signIn}>
 
@@ -221,16 +307,37 @@ export default function Home() {
             </components.leftOverLayPanel>
 
             <components.RightOverLayPanel signinIn={signIn}>
-              <components.Title>Bienvenido, Administrador!</components.Title>
-              <components.Title2>Jardín del Edén</components.Title2>
-
+            <Image src={myImage2} className={styles['my-image']}  alt="Mi imagen"
+            priority={true}  style={{  height: '70px', width: '70px' ,
+            marginTop: '120px',  }}
+            />
+            <Divider/>
+            
+            <components.Title>XIZHONGYAO</components.Title>
+            <Divider layout="horizontal" style={{ borderColor: '#7F6000', borderWidth: '2px', 
+            borderStyle: 'solid' ,
+            marginTop: '1px', 
+            marginLeft: '20px',
+            }}></Divider>
+            <Divider/>
+            <br/>
+              <components.Title2>Cuidando tu salud</components.Title2>
+    
             </components.RightOverLayPanel >
-            <Image src={myImage1} className={styles['my-image']} alt="Mi imagen" priority={true} />
+            <Image src={myImage3} className={styles['my-image']} alt="Mi imagen" priority={true}  />
             <Image src={myImage} className={styles['my-image']} alt="Mi imagen" priority={true} />
           </components.Overlay>
         </components.OverlayContainer>
       </components.Container>
       <AppConfig />
+      <br style={{ margin: '5pt' }} />
+      <br style={{ margin: '5pt' }} />
+      <br style={{ margin: '5pt' }} />
+
+      <Footer />
+        
+
+      
     </>
   )
 }
