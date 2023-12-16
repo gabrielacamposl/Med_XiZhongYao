@@ -133,9 +133,9 @@ const TokenResetear = () => {
       setEstiloConfirmPass('')
     }
     try {
-      console.log(`${tokenPaciente}${token}`)
+      console.log(`${tokenResetearPassword}${token}`)
       console.log(token)
-      const respuesta = await axios.post(`${tokenPaciente}${token}`, { passwordPaciente: password })
+      const respuesta = await axios.post(`${tokenResetearPassword}${token}`, { passwordAdmin: password })
       if (respuesta.status === 200) {
         setMensajeRespuesta(exitoResetPassword)
         setEstiloMensajeRespuesta('success')
@@ -155,8 +155,8 @@ const TokenResetear = () => {
     return (
       <div className="topbar">
         <div className='surface-overlay py-3 px-6 shadow-2 flex align-items-center justify-content-between relative lg:static'>
-          <img src={`/layout/images/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
-          <span>XiZhongYao</span>
+          <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+          <h5> AdminXiZhongYao</h5>
           <a className='p-ripple cursor-pointer block lg:hidden text-700'>
             <i className='pi pi-bars text-4x1'>
             </i>
@@ -165,8 +165,8 @@ const TokenResetear = () => {
             <ul className='list-none p-0 m-0 flex lg:align-items-center text-900 select-none flex-column lg:flex-row cursor-pointer lg:w-4'></ul>
           </div>
           <div className='flex justify-content-end lg:text-right lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0 lg:w-4'>
-            <Button className=' p-button p-component font-bold p-button-outolined p-button-rounded  ' onClick={() => { router.push('/login') }}> Iniciar Sesión</Button>
-            <Button className='p-button p-component font-bold ml-3 p-button-rounded'>¿Eres Doctor?</Button>
+            <Button className=' p-button p-component font-bold p-button-outolined p-button-rounded  'onClick={() => { router.push('/') }}> Iniciar Sesión</Button>
+           {/**  <Button className='p-button p-component font-bold ml-3 p-button-rounded'>¿Eres Doctor?</Button>*/}
           </div>
 
         </div>
@@ -179,67 +179,60 @@ const TokenResetear = () => {
       <div className="footer">
         <div className='grid grid-nogutter surface-section px-4 py-4 md:px-6 lg:px-8 border-top-1 surface-border'>
           <div className='col-12 lg:col-6 lg:border-right-1 surface-border'>
-            <img src={`/layout/images/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
-            <span className='text-900 block mt-4 mr-3'>KJVKJNVFJVnjkvfvkjew v v kjv c skcbckbvubawnjvb s</span>
-            <span className='text-500 block mt-4'> 2023, XiZhongYao by Dreamteam</span>
+          <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+          <span className='text-900 block mt-4 mr-3'>Una empresa dedicada al cuidado se su salud, con la mejor tecnología y los mejores profesionistas.</span>
+          <span className='text-500 block mt-4'> © 2023 XiZhongYao, S.A. Todos los derechos reservados.</span>
           </div>
           <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
-            <span className='text-900 text-xl font-medium block'>Company</span>
+            <span className='text-900 text-xl font-medium block'>Compañía</span>
             <ul className='list-none p-0'>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>About XiZhongYao</a>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Sobre XiZhongYao</a>
               </li>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Factories</a>
-              </li>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>¿Quiénes somos?</a>
+              </li>   
             </ul>
           </div>
           <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
-            <span className='text-900 text-xl font-medium block'>Account</span>
+            <span className='text-900 text-xl font-medium block'>Para Pacientes</span>
             <ul className='list-none p-0'>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>About XiZhongYao</a>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Especialistas</a>
               </li>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Factories</a>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Diagnóstico por Interpretaciones</a>
               </li>
             </ul>
           </div>
         </div>
-
+        
         <div class="surface-900 py-6 lg:py-4 md:px-6 lg:px-8 flex flex-column lg:flex-row justify-content-between align-items-center">
           <ul class="list-none p-0 mb-0 flex flex-column md:flex-row flex-order-1 lg:flex-order-0 mt-4 lg:mt-0">
-            <li class="mr-4 mt-3 lg:mt-0">
-              <a tabindex="0" class="cursor-pointer text-0">Investor Relations</a>
-            </li>
-            <li class="mr-4 mt-3 lg:mt-0">
-              <a tabindex="0" class="cursor-pointer text-0">Data Privacy</a>
-            </li>
-            <li class="mr-4 mt-3 lg:mt-0">
-              <a tabindex="0" class="cursor-pointer text-0">Terms of Service</a>
-            </li>
-            <li class="mr-4 mt-3 lg:mt-0">
-              <a tabindex="0" class="cursor-pointer text-0">Legal Information</a>
-            </li>
-          </ul>
-          <div class="flex align-items-center flex-order-0 lg:flex-order-1">
-            <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
-              <i class="pi pi-facebook surface-section p-1 text-sm border-circle text-900">
-              </i>
-            </a>
-            <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
-              <i class="pi pi-twitter surface-section p-1 text-sm border-circle text-900"></i>
-            </a>
-            <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
-              <i class="pi pi-youtube surface-section p-1 text-sm border-circle text-900"></i>
-            </a>
-            <a tabindex="0" class="cursor-pointer lg:mt-0 block">
-              <i class="pi pi-google surface-section p-1 text-sm border-circle text-900">
-              </i>
-            </a>
+              <li class="mr-4 mt-3 lg:mt-0">
+                <a tabindex="0" class="cursor-pointer text-0">Datos de Privacidad</a>
+                </li>
+                <li class="mr-4 mt-3 lg:mt-0">
+                  <a tabindex="0" class="cursor-pointer text-0">Términos y Condiciones</a>
+                  </li>
+                  <li class="mr-4 mt-3 lg:mt-0">
+                    <a tabindex="0" class="cursor-pointer text-0">Información Legal</a>
+                    </li>
+                    </ul>
+                    <div class="flex align-items-center flex-order-0 lg:flex-order-1">
+                      <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block"> 
+                      <i class="pi pi-facebook surface-section p-1 text-sm border-circle text-900">
+                      </i>
+                      </a>
+                      <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
+                        <i class="pi pi-twitter surface-section p-1 text-sm border-circle text-900"></i>
+                      </a>
+                        <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
+                          <i class="pi pi-youtube surface-section p-1 text-sm border-circle text-900"></i>
+                        </a>
+                      </div>
           </div>
-        </div>
-
+        
       </div>
     );
   }
@@ -332,59 +325,10 @@ const TokenResetear = () => {
 
             </div>
 
-            <div className='w-full lg:w-6 p-4 lg:p7' style={colorDos}>
-              <img src="https://png.pngtree.com/png-vector/20230323/ourmid/pngtree-happy-fruit-cartoon-png-image_6661049.png" alt='Image' height='50' className='mb-6' />
-              <div className='text-xl text-black-alpha-90 font-500 mb-3'>Bienvenido a XIZHONGYAO</div>
-              <p className='text-black-alpha-50 line-height-3 mt-0 mb-6'>
-                Quis vel eros donec ac odio tempor orci dapibus. In hac habitasse platea dictumst quisque.
-              </p>
-              <ul className='list-none p-0 m-0'>
-                <li className='flex align-items-start mb-4'>
-                  <div>
-                    <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                      <i className='text-xl text-white pi pi-inbox'>
-                      </i>
-                    </span>
-                  </div>
-                  <div className='ml-3'>
-                    <span className='font-medium text-black-alpha-90'>Unlimited Inbox
-                    </span>
-                    <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                      Tincidunt nunc pulvinar sapien et. Vitae purus faucibus ornare suspendisse sed nisi lacus sed viverra.
-                    </p>
-                  </div>
-                </li>
-                <li className='flex align-items-start mb-4'>
-                  <div>
-                    <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                      <i className='text-xl text-white pi pi-inbox'>
-                      </i>
-                    </span>
-                  </div>
-                  <div className='ml-3'>
-                    <span className='font-medium text-black-alpha-90'>Unlimited Inbox
-                    </span>
-                    <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                      Tincidunt nunc pulvinar sapien et. Vitae purus faucibus ornare suspendisse sed nisi lacus sed viverra.
-                    </p>
-                  </div>
-                </li>
-                <li className='flex align-items-start mb-4'>
-                  <div>
-                    <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                      <i className='text-xl text-white pi pi-inbox'>
-                      </i>
-                    </span>
-                  </div>
-                  <div className='ml-3'>
-                    <span className='font-medium text-black-alpha-90'>Unlimited Inbox
-                    </span>
-                    <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                      Tincidunt nunc pulvinar sapien et. Vitae purus faucibus ornare suspendisse sed nisi lacus sed viverra.
-                    </p>
-                  </div>
-                </li>
-              </ul>
+            <div className='w-full lg:w-5 p-3 lg:p3' style={colorDos}>
+            <img src={"/pass.png"} alt='Image' height='400' className="mx-auto d-block mb-6" />
+             
+             
             </div>
           </div>
         </div>

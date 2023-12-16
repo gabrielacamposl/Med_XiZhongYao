@@ -53,14 +53,22 @@ import styled from 'styled-components';
  
  export const Title = styled.h1`
  font-weight: bold;
- margin: 0;
- color:white;
+ margin-top: 0px;
+ font-family: 'Times New Roman', serif; 
+ font-size: 3em; /* Tamaño de letra más grande, ajusta según sea necesario */
+ background: linear-gradient(to right, #BF9000, #BF9000, #BF9000, #BF9000, #BF9000, #B8A143, #B8A143, #B8A143, #B7993B, #B7993B, #B7993B, #E9C550, #E9C550, #E9C550, #E4BF4D, #E4BF4D, #E4BF4D, #F2D054, #F2D054, #F2D054);
+ -webkit-background-clip: text;
+ color: transparent;
  `;
 
  export const Title2 = styled.h5`
- font-weight: italic;
+ font-weight: normal;
  margin: 0;
- color:white;
+ font-family: 'Palace Script MT', serif; /* Cambia 'Playfair Display' por la fuente que prefieras */
+ font-size: 3em; /* Tamaño de letra más grande, ajusta según sea necesario */
+ -webkit-background-clip: text;
+ color: #B8A143;
+ font-style: italic;
  `;
 
  export const Title3 = styled.h1`
@@ -101,11 +109,13 @@ import styled from 'styled-components';
     }
  `;
  export const GhostButton = styled(Button)`
- background-color: transparent;
- border-color: #ffffff;
- width: 60%;
-height: 12%;
+
 font-size:15px;
+font-family: 'Times New Roman', serif; 
+font-size: 1.5em; /* Tamaño de letra más grande, ajusta según sea necesario */
+background: linear-gradient(to right, #BF9000, #BF9000, #BF9000, #BF9000, #BF9000, #B8A143, #B8A143, #B8A143, #B7993B, #B7993B, #B7993B, #E9C550, #E9C550, #E9C550, #E4BF4D, #E4BF4D, #E4BF4D, #F2D054, #F2D054, #F2D054);
+-webkit-background-clip: text;
+color: transparent;
  `;
  
  export const Anchor = styled.a`

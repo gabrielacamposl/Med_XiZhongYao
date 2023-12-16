@@ -1,29 +1,29 @@
 //--> Crear usuario
-export const nuevoPaciente = "http://localhost:4444/api/pacientes"
-export const validarToken = "http://localhost:4444/api/pacientes/confirmar/"
+export const nuevoAdmin = "http://localhost:4444/api/administradores"
+export const validarToken = "http://localhost:4444/api/administradores/confirmar/"
 
 //--> Iniciar sesion
-export const iniciarSesion = "http://localhost:4444/api/pacientes/login"
+export const iniciarSesion = "http://localhost:4444/api/administradores/login"
 
 //--> Resetear password
-export const resetearPassword = "http://localhost:4444/api/pacientes/olvide-password"
-export const tokenResetearPassword = "http://localhost:4444/api/pacientes/olvide-password/"
-export const cambiarPassword = "http://localhost:4444/api/pacientes/olvide-password/"
+export const resetearPassword = "http://localhost:4444/api/administradores/olvide-password"
+export const tokenResetearPassword = "http://localhost:4444/administradores/olvide-password/"
+export const cambiarPassword = "http://localhost:4444/api/administradores/olvide-password/"
 
 // --> Catalogo flores
 export const mostrarFlores = "http://localhost:4444/api/productos/mostrarFlores"
 
 //----DATOS USUARIO-------
 // --> Cambiar nombre
-export const modificarNombre = "http://localhost:4000/api/cliente/modificar/username"
+export const modificarNombre = "http://localhost:4000/api/administradores/modificar/username"
 //->Modificar contraseña
-export const ModificarContrasena = "http://localhost:4000/api/cliente/modificar/password"
+export const ModificarContrasena = "http://localhost:4000/api/administradores/modificar/password"
 //->Modificar Telefono
-export const modificarTel = "http://localhost:4000/api/cliente/modificar/telefono"
+export const modificarTel = "http://localhost:4000/api/administradores/modificar/telefono"
 //->AgregarTarjeta
-export const saveTarjeta = "http://localhost:4000/api/cliente/modificar/tarjeta"
+export const saveTarjeta = "http://localhost:4000/api/administradores/modificar/tarjeta"
 //->AgregarDirección
-export const saveDir = "http://localhost:4000/api/cliente/modificar/direccion"
+export const saveDir = "http://localhost:4000/api/administradores/modificar/direccion"
 
 
 //---CARRITO DE COMPRAS-----

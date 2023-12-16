@@ -83,12 +83,12 @@ export default function Login() {
     setMensajeRespuesta('')
     //--> Validar envio a back-end
     try {
-      const respuesta = await axios.post(iniciarSesion, { emailPaciente: email, passwordPaciente: password })
+      const respuesta = await axios.post(iniciarSesion, { emailAdmin: email, passwordAdmin: password })
       if (respuesta.status === 200) {
         // console.log(respuesta.data.username)
      //   localStorage.setItem('nombre', respuesta.data.username)
         localStorage.setItem('token', respuesta.data.token)
-        setTimeout(() => { router.push('/pages/dashboard') }, 1000)
+        setTimeout(() => { router.push('/pages/catalogos/productos') }, 1000)
       }
     } catch (error) {
    //   setMensajeRespuesta(error.response.data.msg)
@@ -117,7 +117,7 @@ export default function Login() {
     } else { setEstiloEmailRec('') }
 
     try {
-      const respuesta = await axios.post(resetearPassword, { emailPaciente: emailrecuperar })
+      const respuesta = await axios.post(resetearPassword, { emailAdmin: emailrecuperar })
       if (respuesta.status === 200) {
         // --> Limpiar variables
         setEmailrecuperar('')
@@ -143,7 +143,7 @@ export default function Login() {
     return (
       <div className="topbar">
         <div className='surface-overlay py-3 px-6 shadow-2 flex align-items-center justify-content-between relative lg:static'>
-          <img src={`/layout/images/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+          <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
         <span>XiZhongYao</span>
         <a className='p-ripple cursor-pointer block lg:hidden text-700'>
           <i className='pi pi-bars text-4x1'> 
@@ -154,7 +154,6 @@ export default function Login() {
         </div>
         <div className='flex justify-content-end lg:text-right lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0 lg:w-4'>
           <Button className=' p-button p-component font-bold p-button-outolined p-button-rounded  '  onClick={() => { router.push('/login') }}> Iniciar Sesión</Button>
-          <Button className='p-button p-component font-bold ml-3 p-button-rounded'>¿Eres Doctor?</Button>
         </div>
 
         </div>
@@ -168,29 +167,29 @@ export default function Login() {
       <div className="footer">
         <div className='grid grid-nogutter surface-section px-4 py-4 md:px-6 lg:px-8 border-top-1 surface-border'>
           <div className='col-12 lg:col-6 lg:border-right-1 surface-border'>
-          <img src={`/layout/images/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
-          <span className='text-900 block mt-4 mr-3'>KJVKJNVFJVnjkvfvkjew v v kjv c skcbckbvubawnjvb s</span>
-          <span className='text-500 block mt-4'> 2023, XiZhongYao by Dreamteam</span>
+          <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+          <span className='text-900 block mt-4 mr-3'>Una empresa dedicada al cuidado se su salud, con la mejor tecnología y los mejores profesionistas.</span>
+          <span className='text-500 block mt-4'> © 2023 XiZhongYao, S.A. Todos los derechos reservados.</span>
           </div>
           <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
-            <span className='text-900 text-xl font-medium block'>Company</span>
+            <span className='text-900 text-xl font-medium block'>Compañía</span>
             <ul className='list-none p-0'>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>About XiZhongYao</a>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Sobre XiZhongYao</a>
               </li>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Factories</a>
-              </li>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>¿Quiénes somos?</a>
+              </li>   
             </ul>
           </div>
           <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
-            <span className='text-900 text-xl font-medium block'>Account</span>
+            <span className='text-900 text-xl font-medium block'>Para Pacientes</span>
             <ul className='list-none p-0'>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>About XiZhongYao</a>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Especialistas</a>
               </li>
               <li>
-                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Factories</a>
+                <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>Diagnóstico por Interpretaciones</a>
               </li>
             </ul>
           </div>
@@ -198,17 +197,14 @@ export default function Login() {
         
         <div class="surface-900 py-6 lg:py-4 md:px-6 lg:px-8 flex flex-column lg:flex-row justify-content-between align-items-center">
           <ul class="list-none p-0 mb-0 flex flex-column md:flex-row flex-order-1 lg:flex-order-0 mt-4 lg:mt-0">
-            <li class="mr-4 mt-3 lg:mt-0">
-              <a tabindex="0" class="cursor-pointer text-0">Investor Relations</a>
-              </li>
               <li class="mr-4 mt-3 lg:mt-0">
-                <a tabindex="0" class="cursor-pointer text-0">Data Privacy</a>
+                <a tabindex="0" class="cursor-pointer text-0">Datos de Privacidad</a>
                 </li>
                 <li class="mr-4 mt-3 lg:mt-0">
-                  <a tabindex="0" class="cursor-pointer text-0">Terms of Service</a>
+                  <a tabindex="0" class="cursor-pointer text-0">Términos y Condiciones</a>
                   </li>
                   <li class="mr-4 mt-3 lg:mt-0">
-                    <a tabindex="0" class="cursor-pointer text-0">Legal Information</a>
+                    <a tabindex="0" class="cursor-pointer text-0">Información Legal</a>
                     </li>
                     </ul>
                     <div class="flex align-items-center flex-order-0 lg:flex-order-1">
@@ -222,22 +218,25 @@ export default function Login() {
                         <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
                           <i class="pi pi-youtube surface-section p-1 text-sm border-circle text-900"></i>
                         </a>
-                          <a tabindex="0" class="cursor-pointer lg:mt-0 block">
-                            <i class="pi pi-google surface-section p-1 text-sm border-circle text-900">
-                            </i>
-                          </a>
                       </div>
           </div>
         
       </div>
     );
   }
-  
+
+  const estiloDelFondo = {
+    backgroundImage: 'url("https://i.pinimg.com/736x/d8/5e/51/d85e51f6ecd887757843ad99d8a41bf9.jpg")', // Cambia la ruta por la de tu imagen
+    backgroundSize: 'cover', // Puedes ajustar esto según tus preferencias
+    backgroundPosition: 'center', // Puedes ajustar esto según tus preferencias
+    // Otros estilos que desees agregar
+  };
 
   //---------------------------| Valor que regresara |---------------------------
   return (
     <>
        <Topbar />
+      <div className='px-4 py-8 md:px-6 lg:px-8' style={estiloDelFondo}>
       <components.Container className={`card m-auto mt-8 ${styles.card}`} >
         <components.SignUpContainer className={`card ${styles.card}`} signinIn={signIn}>
           <components.Form  >
@@ -334,6 +333,7 @@ export default function Login() {
       <br style={{ margin: '5pt' }} />
       <br style={{ margin: '5pt' }} />
 
+      </div>
       <Footer />
         
 

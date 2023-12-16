@@ -100,6 +100,16 @@ const Layout = (props) => {
     'p-ripple-disabled': !layoutConfig.ripple
   });
 
+
+  const estiloDelFondo = {
+    backgroundImage: 'url("https://i.pinimg.com/736x/d8/5e/51/d85e51f6ecd887757843ad99d8a41bf9.jpg  ")', // Cambia la ruta por la de tu imagen
+    backgroundSize: 'cover', // Puedes ajustar esto según tus preferencias
+    backgroundPosition: 'center', // Puedes ajustar esto según tus preferencias
+    // Otros estilos que desees agregar
+  };
+
+
+
   return (
     <React.Fragment>
       <Head>
@@ -114,10 +124,10 @@ const Layout = (props) => {
         <meta property="og:description" content="The ultimate collection of design-agnostic, flexible and accessible React UI Components." />
         <meta property="og:image" content="https://www.primefaces.org/static/social/sakai-nextjs.png"></meta>
         <meta property="og:ttl" content="604800"></meta>
-        <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
+        <link rel="icon" href={`/XZY.ico`} type="image/x-icon"></link>
       </Head>
 
-      <div className={containerClass}>
+      <div className={containerClass} style={estiloDelFondo}>
         <AppTopbar ref={topbarRef} />
         <div ref={sidebarRef} className="layout-sidebar">
           <AppSidebar />
