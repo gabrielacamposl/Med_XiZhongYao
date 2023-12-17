@@ -236,7 +236,7 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>{`Administrador - Iniciar Sesión`}</title>
+        <title>{`Médicos - Iniciar Sesión`}</title>
         <meta charSet="UTF-8" />
         <meta name="robots" content="index, follow" />
         <meta name="viewport" content="initial-scale=1, width=device-width" />

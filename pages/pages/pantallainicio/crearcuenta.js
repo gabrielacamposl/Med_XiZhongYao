@@ -18,9 +18,10 @@ import back from '../../../public/images/background.gif';
 
 //--> Componentes propios
 import {
-  camposVacios, emailInvalido, exitoCuenta, passwordInvalido, passwordsInValidas, formatoNombre} from '@/components/mensajesNotificaciones/mensajes';
-import { nuevoAdmin} from '@/components/mensajesNotificaciones/links';
-{/*import { faArrowUpFromBracket, faBorderAll } from '@fortawesome/free-solid-svg-icons';*/}
+  camposVacios, emailInvalido, exitoCuenta, passwordInvalido, passwordsInValidas, formatoNombre, formatoEspecialidad
+} from '@/components/mensajesNotificaciones/mensajes';
+import { nuevoAdmin } from '@/components/mensajesNotificaciones/links';
+{/*import { faArrowUpFromBracket, faBorderAll } from '@fortawesome/free-solid-svg-icons';*/ }
 
 
 const CrearCuenta = () => {
@@ -34,6 +35,13 @@ const CrearCuenta = () => {
   const [apellido, setApellido] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [especialidad, setEspecialidad] = useState('')
+  const [archivoCedula, setArchivoCedula] = useState(null);
+  const [nombreArchivo, setNombreArchivo] = useState('');
+  const [archivoTitulo, setArchivoTitulo] = useState(null);
+  const [nombreArchivoTitulo, setNombreArchivoTitulo] = useState('');
+
+
   //--> Validar envio
   const [estiloEmail, setEstiloEmail] = useState('')
   const [estiloNombre, setEstiloNombre] = useState('')
@@ -41,11 +49,26 @@ const CrearCuenta = () => {
   const [estiloPassword, setEstiloPassword] = useState('')
   const [estiloConfirmPass, setEstiloConfirmPass] = useState('')
   const [estiloMensajeRespuesta, setEstiloMensajeRespuesta] = useState('')
+  const [estiloEspecialidad, setEstiloEspecialidad] = useState('')
+  const [estiloArchivoCedula, setEstiloArchivoCedula] = useState('')
+  const [estiloArchivoTitulo, setEstiloArchivoTitulo] = useState('')
   //--> Mensajes
   const [mensajeRespuesta, setMensajeRespuesta] = useState('')
-  
+
+  //---------------------| Cargar Archivos PDF |----------------------------
+
+  const cargarPDF = () => {
+    const archivoCedulaSeleccionado = archivoCedula.current.files[0];
+    setArchivoCedula(archivoCedulaSeleccionado);
+  };
+
+  const cargarPDFTitulo = () => {
+    const archivoTituloSeleccionado = archivoTitulo.current.files[0];
+    setArchivoCedula(archivoTituloSeleccionado);
+  };
+
   //-----------------------| Mensajes de advertencia |-----------------------
- 
+
 
   //-----------------------| Expresion regular |-----------------------
   const validarEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/
@@ -53,12 +76,15 @@ const CrearCuenta = () => {
   //-----------------------| Envio |-----------------------
   const crearUsuario = async () => {
     //--> Validar campos llenos
-    if ([email, nombre, apellido, password, confirmPassword].includes('')) {
+    if ([email, nombre, apellido, password, confirmPassword, archivoCedula, archivoTitulo].includes('')) {
       if (!email) setEstiloEmail('p-invalid')
       if (!nombre) setEstiloNombre('p-invalid')
       if (!apellido) setEstiloNombre('p-invalid')
       if (!password) setEstiloPassword('p-invalid')
       if (!confirmPassword) setEstiloConfirmPass('p-invalid')
+      if (!especialidad) setEspecialidad('p-invalid')
+      if (!archivoCedula) setArchivoCedula('p-invalid')
+      if (!archivoTitulo) setArchivoTitulo('p-invalid')
       setMensajeRespuesta(camposVacios)
       setEstiloMensajeRespuesta('error')
 
@@ -70,6 +96,9 @@ const CrearCuenta = () => {
       setEstiloApellido('')
       setEstiloPassword('')
       setEstiloConfirmPass('')
+      setEspecialidad('')
+      setArchivoCedula('')
+      setArchivoTitulo('')
     }
 
     if (/^\d*$/.test(nombre, apellido)) {
@@ -84,7 +113,7 @@ const CrearCuenta = () => {
       setEstiloApellido('')
     }
 
-    if (/^\d*$/.test( apellido)) {
+    if (/^\d*$/.test(apellido)) {
       setEstiloApellido('p-invalid')
       setMensajeRespuesta(formatoNombre)
       setEstiloMensajeRespuesta('error')
@@ -94,6 +123,39 @@ const CrearCuenta = () => {
       setEstiloApellido('')
     }
 
+    //------Validar Especialidad
+
+    if (/^\d*$/.test(especialidad)) {
+      setEstiloEspecialidad('p-invalid')
+      setMensajeRespuesta(formatoEspecialidad)
+      setEstiloMensajeRespuesta('error')
+      setTimeout(() => { setMensajeRespuesta('') }, 3000);
+      return
+    } else {
+      setEstiloEspecialidad('')
+    }
+
+    //--> Validar Cédula Profesional
+    if (!archivoCedula) {
+      setEstiloArchivoCedula('p-invalid');
+      setMensajeRespuesta('Seleccione un archivo PDF de su Cédula Profesional.');
+      setEstiloMensajeRespuesta('error');
+      setTimeout(() => { setMensajeRespuesta('') }, 3000);
+      return;
+    } else {
+      setEstiloArchivoCedula('');
+    }
+
+     //--> Validar Título
+     if (!archivoTitulo) {
+      setEstiloArchivoTitulo('p-invalid');
+      setMensajeRespuesta('Seleccione un archivo PDF de su Título.');
+      setEstiloMensajeRespuesta('error');
+      setTimeout(() => { setMensajeRespuesta('') }, 3000);
+      return;
+    } else {
+      setEstiloArchivoTitulo('');
+    }
 
     //--> Validar email
     if (!validarEmail.test(email)) {
@@ -126,11 +188,20 @@ const CrearCuenta = () => {
       setEstiloConfirmPass('')
     }
 
-    
+
     try {
+
+      const formData = new FormData();
+      formData.append('archivoCedula', archivoCedula);
+      formData.append('archivoTitulo',archivoTitulo);
+
       const objetoCrearUsuario = {
-        nameAdmin: nombre, surnameAdmin: apellido,emailAdmin: email,  passwordAdmin: password
+        nameAdmin: nombre, surnameAdmin: apellido, emailAdmin: email, passwordAdmin: password, especialidad: especialidad,
       }
+      // Agrega otros datos al formulario
+      Object.keys(objetoCrearUsuario).forEach((key) => {
+        formData.append(key, objetoCrearUsuario[key]);
+      });
       const respuesta = await axios.post(nuevoAdmin, objetoCrearUsuario)
       //--> Limpiar campos
       setEmail('')
@@ -138,6 +209,9 @@ const CrearCuenta = () => {
       setApellido('')
       setPassword('')
       setEstiloConfirmPass('')
+      setEstiloEspecialidad('')
+
+
       //--> Redireccionar
       if (respuesta.status === 200) {
         //--> Notificar estatus después de validarlo con back-end
@@ -153,7 +227,7 @@ const CrearCuenta = () => {
       setTimeout(() => { setMensajeRespuesta('') }, 3000)
     }
   }
-  
+
 
   const cancelarCreacion = () => {
     //--> Limpiar campos de entrada antes de salir
@@ -162,6 +236,9 @@ const CrearCuenta = () => {
     setEmail('')
     setPassword('')
     setConfirmPassword('')
+    setEspecialidad('')
+    setArchivoCedula('')
+    setArchivoTitulo('')
 
     //--> Limpiar estilos de campos de entrada
     setEstiloEmail('')
@@ -169,6 +246,9 @@ const CrearCuenta = () => {
     setEstiloApellido('')
     setEstiloPassword('')
     setEstiloConfirmPass('')
+    setEstiloEspecialidad('')
+    setEstiloArchivoCedula('')
+    setEstiloArchivoTitulo('')
 
     //--> Redireccionar
     router.push('/')
@@ -176,27 +256,27 @@ const CrearCuenta = () => {
   }
 
 
-    
+
   const Topbar = () => {
     return (
       <div className="topbar">
         <div className='surface-overlay py-3 px-6 shadow-2 flex align-items-center justify-content-between relative lg:static'>
           <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
-          <h5> AdminXiZhongYao</h5>
-        <a className='p-ripple cursor-pointer block lg:hidden text-700'>
-          <i className='pi pi-bars text-4x1'> 
-          </i>
-        </a>
-        <div className='align-items-center flex-grown-1 hidden lg:flex absolute lg:static w-full surface-overlay left-0 top-100 px-6 lg:px-0 z-2 shadow-2 lg:shadow-none'>
-          <ul className='list-none p-0 m-0 flex lg:align-items-center text-900 select-none flex-column lg:flex-row cursor-pointer lg:w-4'></ul>
-        </div>
-        <div className='flex justify-content-end lg:text-right lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0 lg:w-4'>
-          <Button className=' p-button p-component font-bold p-button-outolined p-button-rounded  '  onClick={() => { router.push('/') }}> Iniciar Sesión</Button>
-         
-        </div>
+          <h5> MedXiZhongYao</h5>
+          <a className='p-ripple cursor-pointer block lg:hidden text-700'>
+            <i className='pi pi-bars text-4x1'>
+            </i>
+          </a>
+          <div className='align-items-center flex-grown-1 hidden lg:flex absolute lg:static w-full surface-overlay left-0 top-100 px-6 lg:px-0 z-2 shadow-2 lg:shadow-none'>
+            <ul className='list-none p-0 m-0 flex lg:align-items-center text-900 select-none flex-column lg:flex-row cursor-pointer lg:w-4'></ul>
+          </div>
+          <div className='flex justify-content-end lg:text-right lg:block border-top-1 lg:border-top-none surface-border py-3 lg:py-0 mt-3 lg:mt-0 lg:w-4'>
+            <Button className=' p-button p-component font-bold p-button-outolined p-button-rounded  ' onClick={() => { router.push('/') }}> Iniciar Sesión</Button>
+
+          </div>
 
         </div>
-        
+
       </div>
     );
   }
@@ -206,9 +286,9 @@ const CrearCuenta = () => {
       <div className="footer">
         <div className='grid grid-nogutter surface-section px-4 py-4 md:px-6 lg:px-8 border-top-1 surface-border'>
           <div className='col-12 lg:col-6 lg:border-right-1 surface-border'>
-          <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
-          <span className='text-900 block mt-4 mr-3'>Una empresa dedicada al cuidado se su salud, con la mejor tecnología y los mejores profesionistas.</span>
-          <span className='text-500 block mt-4'> © 2023 XiZhongYao, S.A. Todos los derechos reservados.</span>
+            <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
+            <span className='text-900 block mt-4 mr-3'>Una empresa dedicada al cuidado se su salud, con la mejor tecnología y los mejores profesionistas.</span>
+            <span className='text-500 block mt-4'> © 2023 XiZhongYao, S.A. Todos los derechos reservados.</span>
           </div>
           <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
             <span className='text-900 text-xl font-medium block'>Compañía</span>
@@ -218,7 +298,7 @@ const CrearCuenta = () => {
               </li>
               <li>
                 <a tabIndex={0} className='text-600 hover:text-900 transition-duration-150 cursor-pointer mt-3 block'>¿Quiénes somos?</a>
-              </li>   
+              </li>
             </ul>
           </div>
           <div className='col-12 md:col-6 lg:col-3 mt-4 lg:mt-0 lg:pl-4 flex flex-column'>
@@ -233,37 +313,37 @@ const CrearCuenta = () => {
             </ul>
           </div>
         </div>
-        
+
         <div class="surface-900 py-6 lg:py-4 md:px-6 lg:px-8 flex flex-column lg:flex-row justify-content-between align-items-center">
           <ul class="list-none p-0 mb-0 flex flex-column md:flex-row flex-order-1 lg:flex-order-0 mt-4 lg:mt-0">
-              <li class="mr-4 mt-3 lg:mt-0">
-                <a tabindex="0" class="cursor-pointer text-0">Datos de Privacidad</a>
-                </li>
-                <li class="mr-4 mt-3 lg:mt-0">
-                  <a tabindex="0" class="cursor-pointer text-0">Términos y Condiciones</a>
-                  </li>
-                  <li class="mr-4 mt-3 lg:mt-0">
-                    <a tabindex="0" class="cursor-pointer text-0">Información Legal</a>
-                    </li>
-                    </ul>
-                    <div class="flex align-items-center flex-order-0 lg:flex-order-1">
-                      <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block"> 
-                      <i class="pi pi-facebook surface-section p-1 text-sm border-circle text-900">
-                      </i>
-                      </a>
-                      <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
-                        <i class="pi pi-twitter surface-section p-1 text-sm border-circle text-900"></i>
-                      </a>
-                        <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
-                          <i class="pi pi-youtube surface-section p-1 text-sm border-circle text-900"></i>
-                        </a>
-                      </div>
+            <li class="mr-4 mt-3 lg:mt-0">
+              <a tabindex="0" class="cursor-pointer text-0">Datos de Privacidad</a>
+            </li>
+            <li class="mr-4 mt-3 lg:mt-0">
+              <a tabindex="0" class="cursor-pointer text-0">Términos y Condiciones</a>
+            </li>
+            <li class="mr-4 mt-3 lg:mt-0">
+              <a tabindex="0" class="cursor-pointer text-0">Información Legal</a>
+            </li>
+          </ul>
+          <div class="flex align-items-center flex-order-0 lg:flex-order-1">
+            <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
+              <i class="pi pi-facebook surface-section p-1 text-sm border-circle text-900">
+              </i>
+            </a>
+            <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
+              <i class="pi pi-twitter surface-section p-1 text-sm border-circle text-900"></i>
+            </a>
+            <a tabindex="0" class="cursor-pointer mr-3 lg:mt-0 block">
+              <i class="pi pi-youtube surface-section p-1 text-sm border-circle text-900"></i>
+            </a>
           </div>
-        
+        </div>
+
       </div>
     );
   }
-  
+
   const estiloDelFondo = {
     backgroundImage: 'url("https://i.pinimg.com/564x/82/74/6f/82746f4cb6ad9d0b9ea72ba36425379b.jpg")', // Cambia la ruta por la de tu imagen
     backgroundSize: 'cover', // Puedes ajustar esto según tus preferencias
@@ -272,7 +352,7 @@ const CrearCuenta = () => {
   };
 
   const color = {
-    backgroundColor:'rgb(255,255,255, 0.7)',
+    backgroundColor: 'rgb(255,255,255, 0.7)',
   };
 
   const estilo = {
@@ -281,6 +361,27 @@ const CrearCuenta = () => {
     backgroundColor: '#800080', // Puedes cambiar esto según tus necesidades
     borderRadius: '10px', // Agregamos el radio de borde
     // Otros estilos que desees agregar
+  };
+
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+
+    if (selectedFile) {
+      setArchivoCedula(selectedFile);
+      setEstiloArchivoCedula('');
+      setNombreArchivo(selectedFile.name);
+    }
+  };
+
+  
+  const handleFileChangeTitulo = (e) => {
+    const selectedFileTitulo = e.target.files[0];
+
+    if (selectedFileTitulo) {
+      setArchivoTitulo(selectedFileTitulo);
+      setEstiloArchivoTitulo('');
+      setNombreArchivoTitulo(selectedFileTitulo.name);
+    }
   };
 
   return (
@@ -300,71 +401,71 @@ const CrearCuenta = () => {
         <meta property="og:ttl" content="604800"></meta>
         <link rel="icon" href={`/XZY.ico`} type="image/x-icon"></link>
       </Head>
-     {/* <Image src={back} priority={true} className="z-0" style={{ width: '100vw', height: '100vh', filter: 'blur(1px)', position: 'absolute' }} alt="Mi imagen" />*/}
-     <div>
-     <div className='px-4 py-8 md:px-6 lg:px-8' style={estiloDelFondo}>
-        <div className='flex flex-wrap'>
-          <div className='w-full lg:w-6 p-4 lg:p7' style={color}>
-           <img src={"/XZY.svg"} alt='Image' height='50' className='mb-6'/>
-           <div className='text-xl text-black-alpha-90 font-500 mb-3'>
-            <h2>Bienvenido a XiZhongYao</h2>
-           </div>
-           <p className='text-black-alpha-50 line-height-3 mt-0 mb-6'>
-           En plataforma en la que nos preocupamos por la salud de nuestros usuarios.
-            </p>
-            <ul className='list-none p-0 m-0'>
-              <li className='flex align-items-start mb-4'>
-                <div>
-                  <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                    <i className='text-xl text-white pi pi-shopping-cart'>
-                    </i>
-                  </span>
-                </div>
-                <div className='ml-3'>
-                  <span className='font-medium text-black-alpha-90'>Gestión de productos
-                  </span>
-                  <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                  Proporcionamos una gran variedad de plantas medicinales, siendo de buena calidad para poderlas brindar a nuestros usuarios.
-                  </p>
-                </div>
-              </li>
-              <li className='flex align-items-start mb-4'>
-                <div>
-                  <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                    <i className='text-xl text-white pi pi-verified'>
-                    </i>
-                  </span>
-                </div>
-                <div className='ml-3'>
-                  <span className='font-medium text-black-alpha-90'>Validación de Médicos
-                  </span>
-                  <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                 Damos a conocer los mejores médicos a nuestros usuarios para que puedan tratar cualquier tipo de enfermedad, siempre teniendo ofreciendo ek mejor trato y servicio.
-                  </p>
-                </div>
-              </li>
-              <li className='flex align-items-start mb-4'>
-                <div>
-                  <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                    <i className='text-xl text-white pi pi-inbox'>
-                    </i>
-                  </span>
-                </div>
-                <div className='ml-3'>
-                  <span className='font-medium text-black-alpha-90'>Citas con médicos
-                  </span>
-                  <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                  Facilitamos el hecho de que obtengas una cita con doctores certificados. Te permitimos buscar, seleccionar y agendar citas de manera sencilla. 
-                  </p>
-                </div>
-              </li>
-            </ul> 
-          </div>
+      {/* <Image src={back} priority={true} className="z-0" style={{ width: '100vw', height: '100vh', filter: 'blur(1px)', position: 'absolute' }} alt="Mi imagen" />*/}
+      <div>
+        <div className='px-4 py-8 md:px-6 lg:px-8' style={estiloDelFondo}>
+          <div className='flex flex-wrap'>
+            <div className='w-full lg:w-6 p-4 lg:p7' style={color}>
+              <img src={"/XZY.svg"} alt='Image' height='50' className='mb-6' />
+              <div className='text-xl text-black-alpha-90 font-500 mb-3'>
+                <h2>Bienvenido a XiZhongYao</h2>
+              </div>
+              <p className='text-black-alpha-50 line-height-3 mt-0 mb-6'>
+                En plataforma en la que nos preocupamos por la salud de nuestros usuarios.
+              </p>
+              <ul className='list-none p-0 m-0'>
+                <li className='flex align-items-start mb-4'>
+                  <div>
+                    <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
+                      <i className='text-xl text-white pi pi-shopping-cart'>
+                      </i>
+                    </span>
+                  </div>
+                  <div className='ml-3'>
+                    <span className='font-medium text-black-alpha-90'>Gestión de productos
+                    </span>
+                    <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
+                      Proporcionamos una gran variedad de plantas medicinales, siendo de buena calidad para poderlas brindar a nuestros usuarios.
+                    </p>
+                  </div>
+                </li>
+                <li className='flex align-items-start mb-4'>
+                  <div>
+                    <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
+                      <i className='text-xl text-white pi pi-verified'>
+                      </i>
+                    </span>
+                  </div>
+                  <div className='ml-3'>
+                    <span className='font-medium text-black-alpha-90'>Validación de Médicos
+                    </span>
+                    <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
+                      Damos a conocer los mejores médicos a nuestros usuarios para que puedan tratar cualquier tipo de enfermedad, siempre teniendo ofreciendo ek mejor trato y servicio.
+                    </p>
+                  </div>
+                </li>
+                <li className='flex align-items-start mb-4'>
+                  <div>
+                    <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
+                      <i className='text-xl text-white pi pi-inbox'>
+                      </i>
+                    </span>
+                  </div>
+                  <div className='ml-3'>
+                    <span className='font-medium text-black-alpha-90'>Citas con médicos
+                    </span>
+                    <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
+                      Facilitamos el hecho de que obtengas una cita con doctores certificados. Te permitimos buscar, seleccionar y agendar citas de manera sencilla.
+                    </p>
+                  </div>
+                </li>
+              </ul>
+            </div>
 
-          <div className='w-full lg:w-6 p-4 lg:p7 surface-card'>
+            <div className='w-full lg:w-6 p-4 lg:p7 surface-card'>
 
-          <h1 className={`font-bold text-center`}>Crear cuenta</h1>
-            <div className="card-container mx-auto text-center ">
+              <h1 className={`font-bold text-center`}>Crear cuenta</h1>
+              <div className="card-container mx-auto text-center ">
                 <div className='field'>
                   <label htmlFor="nombreCompleto" className="block text-900  ">Nombre</label>
                   <InputText
@@ -378,6 +479,51 @@ const CrearCuenta = () => {
                     id="apellido" placeholder="Apellido(s)"
                     className={`${estiloApellido} w-full p-3 md:w-25rem `}
                     value={apellido} onChange={(e) => { setApellido(e.target.value) }} />
+                </div>
+                <div className='field'>
+                  <label htmlFor="especialidad" className="block text-900  ">Especialidad:</label>
+                  <InputText
+                    id="especialidad" placeholder="Especialidad"
+                    className={`${estiloEspecialidad} w-full p-3 md:w-25rem `}
+                    value={especialidad} onChange={(e) => { setEspecialidad(e.target.value) }} />
+                </div>
+                <div className='field'>
+                  <label htmlFor="inputArchivoCedula" className="block text-900">
+                    Subir archivo PDF de su Cédula Profesional
+                  </label>
+                  <div className="flex items-center " style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button
+                      label={ nombreArchivo || "Seleccionar Cédula Profesional"}
+                      className={`mr-2 p-button p-component font-bold p-button-outlined p-button-rounded  ${estiloArchivoCedula}`}
+                      onClick={() => document.getElementById('inputArchivoCedula').click()}
+                    />
+                    <InputText
+                      type="file"
+                      id="inputArchivoCedula"
+                      accept=".pdf"
+                      onChange={handleFileChange}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+                <div className='field'>
+                  <label htmlFor="inputArchivoTitulo" className="block text-900">
+                    Subir archivo PDF de su Título
+                  </label>
+                  <div className="flex items-center " style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button
+                      label={ nombreArchivoTitulo || "Seleccionar Título"}
+                      className={`mr-2 p-button p-component font-bold p-button-outlined p-button-rounded  ${estiloArchivoTitulo}`}
+                      onClick={() => document.getElementById('inputArchivoTitulo').click()}
+                    />
+                    <InputText
+                      type="file"
+                      id="inputArchivoTitulo"
+                      accept=".pdf"
+                      onChange={handleFileChangeTitulo}
+                      className="hidden"
+                    />
+                  </div>
                 </div>
                 <div className='field'>
                   <label htmlFor="email" className="block text-900 ">Correo electrónico</label>
@@ -420,16 +566,16 @@ const CrearCuenta = () => {
                 <Button label="Iniciar Sesión" className='mx-2' link onClick={cancelarCreacion}
                   icon="pi pi-angle-right" iconPos="right" />
               </div>
-            
-            
-          </div>      
-          
+
+
+            </div>
+
           </div>
         </div>
       </div>
-      
-      
-     {/**   <div className='flex h-screen  overflow-auto '>
+
+
+      {/**   <div className='flex h-screen  overflow-auto '>
 
         <div className="z-1">
           <div className={`scalein animation-duration-1000  xl:col-6 md:col-7 sm:col-offset-6 m-auto`}>
@@ -507,7 +653,7 @@ const CrearCuenta = () => {
         </div>
 
       </div>*/}
-   
+
 
       <Footer />
 
