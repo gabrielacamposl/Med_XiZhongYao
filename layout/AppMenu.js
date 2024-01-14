@@ -16,7 +16,8 @@ const AppMenu = () => {
     {
       label: 'Visualización de Citas',
       items: [
-        { label: 'Citas', icon: 'pi pi-book', to: '/pages/usuario/PerfilDoc/citasProgra' },
+        { label: 'Citas Por Confirmar', icon: 'pi pi-book', to: '/pages/usuario/PerfilDoc/citasProgra' },
+        { label: 'Citas Programadas', icon: 'pi pi-calendar', to: '/pages/usuario/PerfilDoc/citasAceptadas' },
       ]
     },
    

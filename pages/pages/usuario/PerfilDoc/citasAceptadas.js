@@ -14,8 +14,7 @@ const Citas = () => {
   const [citaInfo, setCitaInfo] = useState({});
   const [mostrarDialog, setMostrarDialog] = useState(false);
   const [buscador, setBuscador] = useState('');
-  const [showSuccessToast, setShowSuccessToast] = useState(false);
-  const [dialogAceptar, setDialogAceptar] = useState(false);
+
   const router = useRouter();
   const toast = useRef(null);
 
@@ -99,10 +98,6 @@ const Citas = () => {
               <label className="font-medium mb-2"> Hora de tu cita: </label>
               <label>{cita.horaCita}</label>
             </div>
-            <div className="flex justify-content-between pt-4">
-              <Button label="Aceptar Cita" severity="success" onClick={() => handleConfirmCita(cita)} />
-              <Button label="Cancelar Cita" severity="dangerous" onClick={() => handleCancelarCita(cita)} />
-            </div>
           </div>
         </div>
       </div>
@@ -127,10 +122,6 @@ const Citas = () => {
             <i className="pi pi-clock"></i>
             <label className="font-medium mb-2"> Hora de tu cita: </label>
             <label>{cita.horaCita}</label>
-          </div>
-          <div className="flex justify-content-between pt-4">
-            <Button label="Aceptar Cita" severity="success" onClick={() => handleConfirmCita(cita)} />
-            <Button label="Cancelar Cita" severity="dangerous" onClick={() => handleCancelarCita(cita)} />
           </div>
         </div>
       </div>
@@ -170,23 +161,6 @@ const Citas = () => {
     setDialogAceptar(true);
   };
 
-  const confirmarCita = () => {
-    const nuevasCitas = citas.filter((c) => c !== citaInfo);
-    setCitas(nuevasCitas);
-
-    toast.current.show({
-      severity: 'success',
-      summary: 'Cita Confirmada',
-      detail: 'La cita se ha aceptado, en un momento confirmaremos la cita con el Paciente.',
-      life: 3000,
-    });
-
-    setDialogAceptar(false);
-  };
-
-  const handleAceptarCita = () => {
-    // Implementa lógica para aceptar una cita si es necesario
-  };
 
   const cancelarCitaFooter = (
     <>
@@ -195,32 +169,19 @@ const Citas = () => {
     </>
   );
 
-  const aceptarCitaFooter = (
-    <>
-      <Button label="Aceptar" icon="pi pi-check" onClick={confirmarCita} autoFocus severity="success" />
-      <Button label="Cancelar" icon="pi pi-times" onClick={() => setDialogAceptar(false)} severity="dangerous" />
-    </>
-  );
 
   return (
     <Layout title="Mis Citas" description="Mis citas">
       <div className="grid">
         <div className="col-12">
           <div className="card">
-            <h2>Citas Por Confirmar</h2>
+            <h2>Citas Programadas</h2>
             <DataView value={citas} itemTemplate={itemTemplate} layout={layout} header={header()} />
             <Dialog
               header={`Confirmar cancelación de cita de ${citaInfo.nombrePaciente}`}
               visible={mostrarDialog}
               onHide={() => setMostrarDialog(false)}
               footer={cancelarCitaFooter}
-              style={{ width: '35vw' }}
-            />
-            <Dialog
-              header={`Confirmar cita de ${citaInfo.nombrePaciente}`}
-              visible={dialogAceptar}
-              onHide={() => setDialogAceptar(false)}
-              footer={aceptarCitaFooter}
               style={{ width: '35vw' }}
             />
             <Toast ref={toast} />

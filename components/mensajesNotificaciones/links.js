@@ -12,6 +12,6 @@ export const cambiarPassword = "http://localhost:4444/api/doctores/olvide-passwo
 
 
 //----DATOS USUARIO-------
-export const modificarDatos = "http://localhost:4000/api/doctores/main/modificar-informacion"
+export const modificarDatos = "http://localhost:4444/api/doctores/main/modificar-informacion"
 
 

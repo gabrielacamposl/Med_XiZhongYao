@@ -144,7 +144,7 @@ export default function Login() {
       <div className="topbar">
         <div className='surface-overlay py-3 px-6 shadow-2 flex align-items-center justify-content-between relative lg:static'>
           <img src={`/XZY.svg`} width="47.22px" height={'35px'} widt={'true'} alt="logo" />
-        <span>XiZhongYao</span>
+        <span>MedXiZhongYao</span>
         <a className='p-ripple cursor-pointer block lg:hidden text-700'>
           <i className='pi pi-bars text-4x1'> 
           </i>

@@ -354,7 +354,7 @@ const cargarPDFTitulo = () => {
 
   const color = {
     backgroundColor: 'rgb(255,255,255, 0.7)',
-  };
+  };  
 
   const estilo = {
     height: '38px',
