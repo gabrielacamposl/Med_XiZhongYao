@@ -63,7 +63,9 @@ const Token = () => {
 
     //--> Validar envio en back-end
     try {
-      const respuesta = await axios.get(`${validarToken}${token}`)
+      const nuevoLink = `${validarToken}${token}`
+      console.log(nuevoLink)
+      const respuesta = await axios.get(nuevoLink)
       //--> Limpiar campo y estilo
       setToken('')
       setEstiloToken('')

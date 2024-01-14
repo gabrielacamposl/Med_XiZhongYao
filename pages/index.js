@@ -22,7 +22,7 @@ import myImage2 from '../imagenes/login/LogoLogin.png';
 import myImage3 from '../imagenes/login/sourceResetPass.png';
 import loto from '../imagenes/login/XZY.png';
 import styles from '../styles/styles.module.css';
-import { iniciarSesion, resetearPassword } from '@/components/mensajesNotificaciones/links';
+import { loginDoc, resetearPassword } from '@/components/mensajesNotificaciones/links';
 import {
   campoVacio, camposVacios, emailInvalido, passwordInvalido, resetearExitoso
 } from '@/components/mensajesNotificaciones/mensajes';
@@ -82,13 +82,13 @@ export default function Login() {
     } else { setEstiloPassword('') }
     setMensajeRespuesta('')
     //--> Validar envio a back-end
+    console.log(loginDoc)
     try {
-      const respuesta = await axios.post(iniciarSesion, { emailAdmin: email, passwordAdmin: password })
+      const respuesta = await axios.post(loginDoc, { emailDoctor: email, passwordDoctor: password })
       if (respuesta.status === 200) {
-        // console.log(respuesta.data.username)
-     //   localStorage.setItem('nombre', respuesta.data.username)
+
         localStorage.setItem('token', respuesta.data.token)
-        setTimeout(() => { router.push('/pages/catalogos/productos') }, 1000)
+        setTimeout(() => { router.push('/pages/Citas/gestionCitas') }, 1000)
       }
     } catch (error) {
    //   setMensajeRespuesta(error.response.data.msg)
@@ -117,7 +117,7 @@ export default function Login() {
     } else { setEstiloEmailRec('') }
 
     try {
-      const respuesta = await axios.post(resetearPassword, { emailAdmin: emailrecuperar })
+      const respuesta = await axios.post(resetearPassword, { emailDoctor: emailrecuperar })
       if (respuesta.status === 200) {
         // --> Limpiar variables
         setEmailrecuperar('')
@@ -305,7 +305,7 @@ export default function Login() {
             <components.Parrafo>¿Eres Nuevo?</components.Parrafo>
             <div className="flex align-items-center">
               <Link
-                href="/pages/pantallainicio/crearcuenta"
+                href="/pages/pantallainicio/nuevoMedico"
                 className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}
               >Crear cuenta</Link>
             </div>
@@ -334,7 +334,7 @@ export default function Login() {
             }}></Divider>
             <Divider/>
             <br/>
-              <components.Title2>Cuidando tu salud</components.Title2>
+              <components.Title2>Cuidando tu salud a distancia</components.Title2>
     
             </components.RightOverLayPanel >
             <Image src={myImage3} className={styles['my-image']} alt="Mi imagen" priority={true}  />

@@ -7,25 +7,19 @@ const AppMenu = () => {
   const model = [
   
     {
-      label: 'Modificación de Datos',
+      label: 'Disponibilidad de Citas',
       items: [
-        { label: 'Productos', icon: 'pi pi-fw pi-database', to: '/pages/catalogos/productos' },
+        { label: 'Gestión de citas', icon: 'pi pi-calendar-plus', to: '/pages/Citas/gestionCitas' },
 
       ]
     },
     {
-      label: 'Visualización de Registros',
+      label: 'Visualización de Citas',
       items: [
-        { label: 'Ordenes', icon: 'pi pi-fw pi-truck', to: '/pages/usuario/ordenes' },
-        { label: 'Cancelaciones', icon: 'pi pi-fw pi-times-circle', to: '/pages/usuario/cancelaciones' },
+        { label: 'Citas', icon: 'pi pi-book', to: '/pages/usuario/PerfilDoc/citasProgra' },
       ]
     },
-    {
-      label: 'Médicos',
-      items: [
-        { label: 'Validaciones de Médicos', icon: 'pi pi-fw pi-verified', to: '/pages/usuario/PerfilAdmin/medicosVal' },
-      ]
-    }
+   
   ];
 
   return (

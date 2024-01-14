@@ -113,7 +113,7 @@ const Layout = (props) => {
   return (
     <React.Fragment>
       <Head>
-        <title>{`Administrador - ${props.title}`}</title>
+        <title>{`MedXiZhongYao - ${props.title}`}</title>
         <meta charSet="UTF-8" />
         <meta name="description" content={`${props.description}`} />
         <meta name="robots" content="index, follow" />
@@ -139,6 +139,7 @@ const Layout = (props) => {
         <AppConfig />
         <div className="layout-mask"></div>
       </div>
+      
     </React.Fragment>
   );
 };

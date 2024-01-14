@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Component, useState } from 'react'
 import Head from 'next/head';
 import AppConfig from '@/layout/AppConfig';
 import axios from 'axios';
@@ -10,6 +10,7 @@ import { Password } from 'primereact/password';
 import { InputText } from "primereact/inputtext";
 import { useRouter } from 'next/router';
 import { Divider } from 'primereact/divider';
+import * as components from './comp';
 
 //-->Imagenes 
 import Image from 'next/image';
@@ -20,8 +21,8 @@ import back from '../../../public/images/background.gif';
 import {
   camposVacios, emailInvalido, exitoCuenta, passwordInvalido, passwordsInValidas, formatoNombre, formatoEspecialidad
 } from '@/components/mensajesNotificaciones/mensajes';
-import { nuevoAdmin } from '@/components/mensajesNotificaciones/links';
-{/*import { faArrowUpFromBracket, faBorderAll } from '@fortawesome/free-solid-svg-icons';*/ }
+import {  nuevoDoc } from '@/components/mensajesNotificaciones/links';
+
 
 
 const CrearCuenta = () => {
@@ -57,7 +58,7 @@ const CrearCuenta = () => {
 
   //---------------------| Cargar Archivos PDF |----------------------------
 
-  const cargarPDF = () => {
+ /* const cargarPDF = () => {
     const archivoCedulaSeleccionado = archivoCedula.current.files[0];
     setArchivoCedula(archivoCedulaSeleccionado);
   };
@@ -66,7 +67,16 @@ const CrearCuenta = () => {
     const archivoTituloSeleccionado = archivoTitulo.current.files[0];
     setArchivoCedula(archivoTituloSeleccionado);
   };
+*/
 
+const cargarPDF = () => {
+  handleFileChange();
+};
+
+const cargarPDFTitulo = () => {
+  handleFileChangeTitulo();
+};
+  
   //-----------------------| Mensajes de advertencia |-----------------------
 
 
@@ -76,17 +86,17 @@ const CrearCuenta = () => {
   //-----------------------| Envio |-----------------------
   const crearUsuario = async () => {
     //--> Validar campos llenos
-    if ([email, nombre, apellido, password, confirmPassword, archivoCedula, archivoTitulo].includes('')) {
+    if ([email, nombre, apellido, password,  confirmPassword, especialidad,archivoCedula, archivoTitulo].includes('')) {
       if (!email) setEstiloEmail('p-invalid')
       if (!nombre) setEstiloNombre('p-invalid')
-      if (!apellido) setEstiloNombre('p-invalid')
+      if (!apellido) setEstiloApellido('p-invalid')
       if (!password) setEstiloPassword('p-invalid')
       if (!confirmPassword) setEstiloConfirmPass('p-invalid')
       if (!especialidad) setEspecialidad('p-invalid')
       if (!archivoCedula) setArchivoCedula('p-invalid')
       if (!archivoTitulo) setArchivoTitulo('p-invalid')
       setMensajeRespuesta(camposVacios)
-      setEstiloMensajeRespuesta('error')
+      setEstiloMensajeRespuesta('No se pudo completar la operación.')
 
       setTimeout(() => { setMensajeRespuesta('') }, 3000);
       return
@@ -94,9 +104,9 @@ const CrearCuenta = () => {
       setEstiloEmail('')
       setEstiloNombre('')
       setEstiloApellido('')
+      setEspecialidad('')
       setEstiloPassword('')
       setEstiloConfirmPass('')
-      setEspecialidad('')
       setArchivoCedula('')
       setArchivoTitulo('')
     }
@@ -123,17 +133,6 @@ const CrearCuenta = () => {
       setEstiloApellido('')
     }
 
-    //------Validar Especialidad
-
-    if (/^\d*$/.test(especialidad)) {
-      setEstiloEspecialidad('p-invalid')
-      setMensajeRespuesta(formatoEspecialidad)
-      setEstiloMensajeRespuesta('error')
-      setTimeout(() => { setMensajeRespuesta('') }, 3000);
-      return
-    } else {
-      setEstiloEspecialidad('')
-    }
 
     //--> Validar Cédula Profesional
     if (!archivoCedula) {
@@ -193,23 +192,25 @@ const CrearCuenta = () => {
 
       const formData = new FormData();
       formData.append('archivoCedula', archivoCedula);
-      formData.append('archivoTitulo',archivoTitulo);
+      formData.append('archivoTitulo', archivoTitulo);
 
       const objetoCrearUsuario = {
-        nameAdmin: nombre, surnameAdmin: apellido, emailAdmin: email, passwordAdmin: password, especialidad: especialidad,
+        res_nameDoctor: nombre,  res_surnameDoctor: apellido, res_emailDoctor: email, res_passwordDoctor: password, res_especialidad: especialidad, pathCedula: archivoCedula, pathTitulo: archivoTitulo
       }
       // Agrega otros datos al formulario
       Object.keys(objetoCrearUsuario).forEach((key) => {
         formData.append(key, objetoCrearUsuario[key]);
       });
-      const respuesta = await axios.post(nuevoAdmin, objetoCrearUsuario)
+      const respuesta = await axios.post(nuevoDoc, formData)
       //--> Limpiar campos
       setEmail('')
       setNombre('')
       setApellido('')
       setPassword('')
       setEstiloConfirmPass('')
-      setEstiloEspecialidad('')
+      setEspecialidad('')
+      setArchivoCedula('')
+      setArchivoTitulo('')
 
 
       //--> Redireccionar
@@ -365,18 +366,17 @@ const CrearCuenta = () => {
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-
+  
     if (selectedFile) {
       setArchivoCedula(selectedFile);
       setEstiloArchivoCedula('');
       setNombreArchivo(selectedFile.name);
     }
   };
-
   
   const handleFileChangeTitulo = (e) => {
     const selectedFileTitulo = e.target.files[0];
-
+  
     if (selectedFileTitulo) {
       setArchivoTitulo(selectedFileTitulo);
       setEstiloArchivoTitulo('');
@@ -407,55 +407,58 @@ const CrearCuenta = () => {
           <div className='flex flex-wrap'>
             <div className='w-full lg:w-6 p-4 lg:p7' style={color}>
               <img src={"/XZY.svg"} alt='Image' height='50' className='mb-6' />
+
+                  
               <div className='text-xl text-black-alpha-90 font-500 mb-3'>
-                <h2>Bienvenido a XiZhongYao</h2>
+              <components.Title>Bienvenido a XiZhongYao</components.Title>
               </div>
-              <p className='text-black-alpha-50 line-height-3 mt-0 mb-6'>
+              <p className='text-black-alpha-70 line-height-3 mt-0 mb-6'>
                 En plataforma en la que nos preocupamos por la salud de nuestros usuarios.
               </p>
               <ul className='list-none p-0 m-0'>
                 <li className='flex align-items-start mb-4'>
                   <div>
                     <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                      <i className='text-xl text-white pi pi-shopping-cart'>
+                      <i className='text-xl text-white pi pi-book'>
                       </i>
                     </span>
                   </div>
-                  <div className='ml-3'>
-                    <span className='font-medium text-black-alpha-90'>Gestión de productos
+                
+                  <div className='ml-5'>
+                    <span className='font-medium text-black-alpha-90'>Gestión de citas
                     </span>
                     <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                      Proporcionamos una gran variedad de plantas medicinales, siendo de buena calidad para poderlas brindar a nuestros usuarios.
+                    Usted prodrá seleccionar su disponibilidad, tanto el día, como la hora para poder atender a sus pacientes.
                     </p>
                   </div>
                 </li>
                 <li className='flex align-items-start mb-4'>
                   <div>
                     <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                      <i className='text-xl text-white pi pi-verified'>
+                      <i className='text-xl text-white pi pi-calendar-times'>
                       </i>
                     </span>
                   </div>
-                  <div className='ml-3'>
-                    <span className='font-medium text-black-alpha-90'>Validación de Médicos
+                  <div className='ml-5'>
+                    <span className='font-medium text-black-alpha-90'>Agenda de citas
                     </span>
                     <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                      Damos a conocer los mejores médicos a nuestros usuarios para que puedan tratar cualquier tipo de enfermedad, siempre teniendo ofreciendo ek mejor trato y servicio.
+                     Podrá consultar que días los pacientes han agendado cita con usted.
                     </p>
                   </div>
                 </li>
                 <li className='flex align-items-start mb-4'>
                   <div>
                     <span className='flex align-items-center justify-content-center bg:purple-400' style={estilo}>
-                      <i className='text-xl text-white pi pi-inbox'>
+                      <i className='text-xl text-white pi pi-times-circle'>
                       </i>
                     </span>
                   </div>
-                  <div className='ml-3'>
-                    <span className='font-medium text-black-alpha-90'>Citas con médicos
+                  <div className='ml-5'>
+                    <span className='font-medium text-black-alpha-90'>Cancelación de citas
                     </span>
                     <p className='mt-2 mb-0 text-black-aplha-50 line-height-3'>
-                      Facilitamos el hecho de que obtengas una cita con doctores certificados. Te permitimos buscar, seleccionar y agendar citas de manera sencilla.
+                      Usted podrá cancelar citas, si es que tiene algún inconveniente el día en que tiene agendada una cita.
                     </p>
                   </div>
                 </li>
@@ -494,7 +497,7 @@ const CrearCuenta = () => {
                   <div className="flex items-center " style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Button
                       label={ nombreArchivo || "Seleccionar Cédula Profesional"}
-                      className={`mr-2 p-button p-component font-bold p-button-outlined p-button-rounded  ${estiloArchivoCedula}`}
+                      className={`mr-2 p-button p-component font-bold   ${estiloArchivoCedula}`}
                       onClick={() => document.getElementById('inputArchivoCedula').click()}
                     />
                     <InputText
@@ -513,7 +516,7 @@ const CrearCuenta = () => {
                   <div className="flex items-center " style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Button
                       label={ nombreArchivoTitulo || "Seleccionar Título"}
-                      className={`mr-2 p-button p-component font-bold p-button-outlined p-button-rounded  ${estiloArchivoTitulo}`}
+                      className={`mr-2 p-button p-component font-bold  ${estiloArchivoTitulo}`}
                       onClick={() => document.getElementById('inputArchivoTitulo').click()}
                     />
                     <InputText
@@ -573,86 +576,6 @@ const CrearCuenta = () => {
           </div>
         </div>
       </div>
-
-
-      {/**   <div className='flex h-screen  overflow-auto '>
-
-        <div className="z-1">
-          <div className={`scalein animation-duration-1000  xl:col-6 md:col-7 sm:col-offset-6 m-auto`}>
-            <div className='card col-12 justify-content-center'>
-
-              <Image src={loto} priority={false} style={{ width: '18%', height: '13%', marginLeft: '40%' }} alt="Mi imagen" />
-              <h1 className={`font-bold text-center`}>Crear cuenta</h1>
-
-              <div className="card-container mx-auto text-center ">
-                <div className='field'>
-                  <label htmlFor="nombreCompleto" className="block text-900  ">Nombre</label>
-                  <InputText
-                    id="nombreCompleto" placeholder="Nombre"
-                    className={`${estiloNombre} w-full p-3 md:w-25rem `}
-                    value={nombre} onChange={(e) => { setNombre(e.target.value) }} />
-                </div>
-                <div className='field'>
-                  <label htmlFor="apellido" className="block text-900  ">Apellidos</label>
-                  <InputText
-                    id="apellido" placeholder="Apellido(s)"
-                    className={`${estiloApellido} w-full p-3 md:w-25rem `}
-                    value={apellido} onChange={(e) => { setApellido(e.target.value) }} />
-                </div>
-                <div className='field'>
-                  <label htmlFor="email" className="block text-900 ">Correo electrónico</label>
-                  <InputText
-                    id="email" placeholder="Correo electrónico" className={`${estiloEmail} w-full p-3 md:w-25rem`}
-                    value={email} onChange={(e) => { setEmail(e.target.value) }} />
-                </div>
-
-                <div className='field'>
-                  <label className="block text-900 ">Contraseña</label>
-                  <Password
-                    id="password" placeholder='Mínimo 6 caracteres' inputClassName={`w-full p-3 md:w-25rem`} className={`${estiloPassword}`}
-                    value={password} onChange={(e) => setPassword(e.target.value)}
-                    promptLabel="Crea tu contraseña" weakLabel="Debil" mediumLabel="Medio" strongLabel="Fuerte"
-                  />
-                </div>
-                <div className='field'>
-                  <label className="block text-900 ">Confirme su contraseña</label>
-                  <Password
-                    id="cpassword" placeholder='Repita su contraseña' inputClassName={`w-full p-3 md:w-25rem`} className={`${estiloConfirmPass} `}
-                    value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} feedback={false}
-                  />
-                </div>
-
-                {mensajeRespuesta && (
-                  <div className='mx-auto my-3' style={{ width: "600px", textAlign: "center" }}>
-                    <Message severity={estiloMensajeRespuesta} text={mensajeRespuesta} />
-                  </div>
-                )}
-
-                <div className='flex justify-content-center mb-2'>
-                  <Button label="Aceptar" className='mr-2 w-full p-3 md:w-13rem' onClick={crearUsuario} severity="success" size="large" />
-                  <Button label="Cancelar" className='mr-2 w-full p-3 md:w-13rem' onClick={cancelarCreacion} severity="danger" size="large" />
-
-                </div>
-              </div>
-
-              <div className='flex justify-content-center'>
-                <p className='mt-3'>¿Ya tienes una cuenta?</p>
-                <Button label="Iniciar Sesión" className='mx-2' link onClick={cancelarCreacion}
-                  icon="pi pi-angle-right" iconPos="right" />
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-
-        <div>
-
-          <AppConfig />
-        </div>
-
-      </div>*/}
 
 
       <Footer />

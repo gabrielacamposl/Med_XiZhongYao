@@ -4,24 +4,34 @@ import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Image } from 'cloudinary-react';
 
-const Doctores = () => {
+const perfilDoctor = () => {
   //----------------| Lista de variables |----------------
   const [nombre, setNombre] = useState('')
   const [apellidos, setApellido] = useState('')
   const [phone, setPhone] = useState('')
   const [phoneL, setPhoneLadas] = useState(null);
-
+  const [descripcion, setDescripcion] = useState('');  
+  const [correo, setCorreo] = useState('');  
+  const [direccion, setDireccion] = useState('');  
+  const [url, setUrl] = useState('');  
+  const [especialidad, setEspecialidad] = useState('')
+  const [cedula, setCedula] = useState ('')
 
 
   //--> Validar envio
-  const [estiloPhone, setEstiloPhone] = useState('')
-  const [estiloPhoneLadas, setEstiloPhoneLadas] = useState('')
   const [estiloNombre, setEstiloNombre] = useState('')
   const [estiloApellido, setEstiloApellido] = useState('')
+  const [estiloPhone, setEstiloPhone] = useState('')
+  const [estiloPhoneLadas, setEstiloPhoneLadas] = useState('')
+  const [estiloDescripcion, setEstiloDescripcion]=useState('')
+  const [estiloCorreo, setEstiloCorreo] =useState('')
+  const [estiloDir, setEstiloDir] = useState('')
+  const [estiloUrl, setEstiloUrl] =useState('')
+  const [estiloEspecialidad, setEstiloEspecialidad] = useState('')
+  const [estiloCedula, setEstiloCedula] = useState('')
 
     // --> Leer localstorage
-  
-    
+ 
     //-----------------------| Envio Nombre |-----------------------
     const cambiarNombre = async () => {
       //--> Validar campos vacios
@@ -122,7 +132,7 @@ const Doctores = () => {
             <div className="surface-card p-5 shadow-2 border-round flex-auto">
             <div className="flex flex-column align-items-center flex-or">
             <span className="font-medium text-900 mb-2">Foto de Perfil</span>
-            <Image style={{borderRadious:'50%'}} src={`/images/analisCli.jpg`} alt="avatar-f-2" className="h-10rem w-10rem rounded-full" />
+            <Image style={{borderRadious:'50%'}} src={`/images/analisCli.jpg`} alt="avatar-f-2" className="h-10rem w-10rem border-rounder" />
             <Button
               icon="pi pi-pencil" // Agrega el icono de lápiz
               className=' p-button-rounded -mt-4 '
@@ -156,9 +166,31 @@ const Doctores = () => {
                         <InputText placeholder='Teléfono' className={`${estiloPhone} p-inputtext p-component`}
                         value={phone} onChange={(e) => setPhone(e.target.value)} />
                        </div>
-
-                        
-
+                       <div className="field mb-4 col-12 md:col-6">
+                       <label className="block text-900 text-xl font-medium mb-2" type="text">Especialidad:</label>
+                        <InputText placeholder='Especialidad' className={`${estiloEspecialidad} p-inputtext p-component`}
+                        value={especialidad} onChange={(e) => setEspecialidad(e.target.value)} />
+                       </div>
+                       <div className="field mb-4 col-12 md:col-6">
+                       <label className="block text-900 text-xl font-medium mb-2" type="text">Cédula Profesional:</label>
+                        <InputText placeholder='Cédula Profesional' className={`${estiloCedula} p-inputtext p-component`}
+                        value={cedula} onChange={(e) => setCedula(e.target.value)} />
+                       </div>
+                       <div className="field mb-4 col-12 md:col-6">
+                       <label className="block text-900 text-xl font-medium mb-2" type="text">Correo Electrónico:</label>
+                        <InputText placeholder='Correo Electrónico' className={`${estiloCorreo } p-inputtext p-component`}
+                        value={correo} onChange={(e) => setCorreo(e.target.value)} />
+                       </div>
+                       <div className="field mb-4 col-12 md:col-6">
+                       <label className="block text-900 text-xl font-medium mb-2" type="text">Dirección:</label>
+                        <InputText placeholder='Dirección' className={`${estiloDescripcion } p-inputtext p-component`}
+                        value={descripcion} onChange={(e) => setDescripcion(e.target.value)} />
+                       </div>
+                       <div className="field mb-4 col-12 md:col-6">
+                       <label className="block text-900 text-xl font-medium mb-2" type="text">Abrir en google maps:</label>
+                        <InputText placeholder='Dirección en google maps' className={`${estiloUrl } p-inputtext p-component`}
+                        value={url} onChange={(e) => setUrl(e.target.value)} />
+                       </div>
                   </div>
 
                 </div>
@@ -177,4 +209,4 @@ const Doctores = () => {
   );
 }
 
-export default Doctores;
+export default perfilDoctor;

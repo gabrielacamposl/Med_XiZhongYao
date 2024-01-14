@@ -60,12 +60,12 @@ const Devoluciones = () => {
   //--> Cargar cuando se renderiza
   useEffect(() => {
     const datos = [
-      { idDev: 1, idProducto: 565, nomProducto: "Peluche Chimmy", estadoDev: "Pendiente", fechaDev : '20-06-2023', motivo: "Está roto", precioDev: 398.00,  idCliente: 15, nomCliente:'Omar Yu' , notas: "Lo quiero devolver porque ya no lo quiero."},
-      { idDev: 2, idProducto: 465, nomProducto: "Peluche Cooky Bebé",  estadoDev: "Pendiente",  fechaDev : '15-05-2023', motivo: "Está deforme", precioDev: 599.00,  idCliente: 18, nomCliente:'Lisa Mora' , notas: "No me gustó para regalar."},
-      { idDev: 3, idProducto: 12, nomProducto: "Rosetas primaverales", estadoDev: "Rechazada",  fechaDev : '03-06-2023',  motivo: "Llegarón maltratadas.", precioDev: 278.50,  idCliente: 136, nomCliente:'Lorena García' , notas: "..."},
-      { idDev: 4, idProducto: 68, nomProducto: "Jirafa jumbo",  estadoDev: "Procesada", fechaDev : '30-05-2023',  motivo: "Está descocido", precioDev: 800.99,  idCliente: 15, nomCliente:'Paola Campos' , notas: "..."},
-      { idDev: 5, idProducto: 645, nomProducto: "Delfín amistoso", estadoDev: "Pendiente", fechaDev : '01-04-2023',  motivo: "Color equivocado", precioDev: 215.00,  idCliente: 64, nomCliente:'Enrique Hernández' , notas: "..."},
-      { idDev: 6, idProducto: 31, nomProducto: "Tulipán", estadoDev: "Rechazada", fechaDev : '09-05-2023',  motivo: "Hojas secas", precioDev: 150.00,  idCliente: 353, nomCliente:'Juan Montes' , notas: "..."},
+      { idDev: 1, idProducto: 'adrealg1@gmail.com', nomProducto: "ArchivoTítulo.pdf", estadoDev: "Cedula_Archivo.pdf", fechaDev : '20-06-2023', motivo: "Otorrinolaringologo", precioDev: 398.00,  idCliente: 15, nomCliente:'Adrián Real García' , notas: "Lo quiero devolver porque ya no lo quiero."},
+      { idDev: 2, idProducto: 'docpaogaracia@gmail.com', nomProducto: "ArchivoTítulo.pdf",  estadoDev: "Cedula_Prof_Archivo.pdf",  fechaDev : '15-05-2023', motivo: "Gastroenterólogo", precioDev: 599.00,  idCliente: 18, nomCliente:'Paola García Márquez' , notas: "No me gustó para regalar."},
+      { idDev: 3, idProducto: 'maresnancy@hotmail.com', nomProducto: "Archivo_Título.pdf", estadoDev: "cedulaprof.pdf",  fechaDev : '03-06-2023',  motivo: "Pediatra", precioDev: 278.50,  idCliente: 136, nomCliente:'Nancy Mares Azules' , notas: "..."},
+      { idDev: 4, idProducto: 'francojuarez@gmail.com', nomProducto: "Título_Archivo.pdf",  estadoDev: "cedulaProf.pdf", fechaDev : '30-05-2023',  motivo: "Gatroenterólogo", precioDev: 800.99,  idCliente: 15, nomCliente:'Franco Juárez Nart' , notas: "..."},
+      { idDev: 5, idProducto: "docbere@gmail.com", nomProducto:'Archivo.pdf' ,  estadoDev: "cedulaArchivo.pdf", fechaDev : '01-04-2023',  motivo: "Dermatólogo", precioDev: 215.00,  idCliente: 64, nomCliente:'Berenice Alva Ferlk' , notas: "..."},
+      { idDev: 6, idProducto: 'marcool14@gmail.com', nomProducto: "Archivo.pdf", estadoDev: "cedProf.pdf", fechaDev : '09-05-2023',  motivo: "Neumólogo", precioDev: 150.00,  idCliente: 353, nomCliente:'Marco Olvera Nieto' , notas: "..."},
      
      
     ]
@@ -183,7 +183,7 @@ const handleButtonClick = () => {
   //----------------| Botones de dialogos |----------------
   const cabezal = (
     <div className="flex flex-wrap gap-2 align-items-center justify-content-between">
-      <h4 className="m-0">Registro de Devoluciones</h4>
+      <h4 className="m-0">Validaciones de Médicos</h4>
       <span className="p-input-icon-left">
         <i className="pi pi-search" />
         <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
@@ -232,7 +232,7 @@ const handleButtonClick = () => {
   //----------------| Valor que regresara |----------------
   return (
     <Layout
-      title="Cancelaciones"
+      title="Validaciones"
       description="Acceso al registro de cancelaciones"
     >
       <div className="grid">
@@ -247,18 +247,14 @@ const handleButtonClick = () => {
               paginator rows={15} rowsPerPageOptions={[5, 10, 15]} showGridlines
               paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
               currentPageReportTemplate="Mostrando {first} - {last} de {totalRecords} registros"
-              globalFilter={globalFilter} header={cabezal} >
-                
+              globalFilter={globalFilter} header={cabezal}
+            >
               <Column selectionMode="multiple" exportable={false} />
-              <Column field="idDev" header="ID Devolución" sortable style={{ minWidth: '12rem', textAlign: "center" }} />
-              <Column field="idProducto" header="ID Producto" sortable style={{ minWidth: '10rem', textAlign: "center" }} />
-              <Column field="nomProducto" header="Nombre del Producto" sortable style={{ minWidth: '16rem', textAlign: "center" }} />
-              <Column field="fechaDev" header="Fecha de Devolución"  sortable style={{ minWidth: '16rem', textAlign: "center" }}> <FormatoFecha fechaDev={fecha} /> </Column>
-              <Column field="motivo" header="Motivo" sortable style={{ minWidth: '16rem', textAlign: "center" }} />
-              <Column field="precioDEV" header="Cantidad a Devolver" body={plantillaPrecio}  sortable style={{ minWidth: '16rem', textAlign: "center" }} />
-              <Column field="estadoDev" header="Estado de la Devolución"   body={plantillaEstatus} sortable style={{ minWidth: '16rem', textAlign: "center" }} />
-              <Column field="idCliente" header="ID Cliente" sortable style={{ minWidth: '10rem', textAlign: "center" }} />
-              <Column field="nomCliente" header="Nombre Cliente" sortable style={{ minWidth: '16rem', textAlign: "center" }} />
+              <Column field="nomCliente" header="Nombre del Médico" sortable style={{ minWidth: '16rem', textAlign: "center" }} />
+              <Column field="idProducto" header="Correo electrónico" sortable style={{ minWidth: '12rem', textAlign: "center" }} />
+              <Column field="motivo" header="Especialidad" sortable style={{ minWidth: '10rem', textAlign: "center" }} />
+              <Column field="nombreProducto" header="Título"  sortable style={{ minWidth: '16rem', textAlign: "center" }}> <FormatoFecha fechaDev={fecha} /> </Column>
+              <Column field="estadoDev" header="Cédulta Profesioinal" sortable style={{ minWidth: '16rem', textAlign: "center" }} />
               
               <Column header="Validar / Eliminar registro" body={botonesAccion} exportable={false} style={{ minWidth: '20rem' , textAlign: "center"}} />
             </DataTable>
