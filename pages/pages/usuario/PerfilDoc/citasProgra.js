@@ -20,7 +20,12 @@ const Citas = () => {
   const toast = useRef(null);
 
   const datosCitas = [
-    {
+    /*{
+      nombrePaciente: "Miguel Campos Luna",
+      diaCita: "24/01/2024 ",
+      horaCita: "14:20 AM",
+    },*/
+    /*{
       nombrePaciente: "Gabriela Campos Lechuga",
       diaCita: "26/12/2023 ",
       horaCita: "10:00 AM",
@@ -34,7 +39,7 @@ const Citas = () => {
       nombrePaciente: "Andrés Carreón",
       diaCita: "09/01/2024  ",
       horaCita: "5:00 PM",
-    },
+    },*/
   ];
 
   useEffect(() => {

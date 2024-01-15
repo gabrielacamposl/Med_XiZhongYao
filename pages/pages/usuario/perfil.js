@@ -25,7 +25,7 @@ const Perfil = () => {
               </div>
               <div className="flex align-items-center flex-wrap my-2">
                 <i className="pi pi-user-edit flex align-items-center justify-content-center m-2" style={{ fontSize: '2rem' }}></i>
-                <Button label="Modificar Perfil" text className="flex align-items-center justify-content-center m-2" onClick={() => { router.push('/pages/usuario/PerfilDoc/modifPerfil') }} />
+                <Button label="Modificar Perfil" text className="flex align-items-center justify-content-center m-2" onClick={() => { router.push('/pages/usuario/PerfilDoc/editarPerfil') }} />
               </div>
             </div>
 

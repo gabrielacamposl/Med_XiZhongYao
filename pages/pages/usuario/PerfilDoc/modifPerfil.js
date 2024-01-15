@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef} from "react";
 import Layout from "@/layout/layout";
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
@@ -6,17 +6,15 @@ import { Image } from 'cloudinary-react';
 import { modificarDatos } from '@/components/mensajesNotificaciones/links';
 import { Toast } from 'primereact/toast';
 import axios from 'axios';
-import { useRouter } from 'next/router';
-
 
 
 
 const perfilDoctor = () => {
-  //--> Variable de redireccinamiento
-  const router = useRouter();
+    //--> Variable de redireccinamiento
+  //  const router = useRouter();
 
-  //--> Mensajes y notificaciones
-  const toast = useRef(null);
+    //--> Mensajes y notificaciones
+    const toast = useRef(null);
 
   //----------------| Lista de variables |----------------
 
@@ -49,7 +47,7 @@ const perfilDoctor = () => {
     setApellido(nombreCompleto.split(' ')[1])
   }, []) */
 
-
+  
   // --> Leer localstorage
   const handleImagenSeleccionada = (event) => {
     const file = event.target.files[0];
@@ -90,24 +88,24 @@ const perfilDoctor = () => {
       setEstiloNombre('')
       setEstiloApellido('')
     }
-    //--> Validar phone
-    if (phone.length !== 10) {
-      setEstiloPhone('p-invalid')
-      mostrarMensaje(contactoInvalido)
-      setTimeout(() => { limpiarMensaje() }, 3000)
-      return
-    } else {
-      setEstiloPhone('')
-    }
-
-    if (/[a-zA-Z]/.test(phone)) {
-      setEstiloPhone('p-invalid')
-      mostrarMensaje(contactoInvalido)
-      setTimeout(() => { limpiarMensaje() }, 3000)
-      return
-    } else {
-      setEstiloPhone('')
-    }
+      //--> Validar phone
+      if (phone.length !== 10) {
+        setEstiloPhone('p-invalid')
+        mostrarMensaje(contactoInvalido)
+        setTimeout(() => { limpiarMensaje() }, 3000)
+        return
+      } else {
+        setEstiloPhone('')
+      }
+  
+      if (/[a-zA-Z]/.test(phone)) {
+        setEstiloPhone('p-invalid')
+        mostrarMensaje(contactoInvalido)
+        setTimeout(() => { limpiarMensaje() }, 3000)
+        return
+      } else {
+        setEstiloPhone('')
+      }
 
     //--> Preparar objeto para enviar
     const token = localStorage.getItem('token')
@@ -117,16 +115,16 @@ const perfilDoctor = () => {
       }
     }
     const objetoEnviar = {
-      nombreDoctor: nombre,
-      surnameDoctor: apellidos,
-      telefonoDoctor: phone,
-      especialidad: especialidad,
-      descripcionDoctor: descripcion,
-      imagenDoctor: imagen,
+      in_nombreDoctor: nombre,
+      in_surnameDoctor: apellidos,
+      in_telefonoDoctor: phone,
+      in_especialidad: especialidad, 
+      in_descripcionDoctor :descripcion,
+      in_imagenDoctor: imagen,
       pathCedula: cedula,
-      direccion: direccion,
-      direccion_maps: url
-
+      in_direccion:direccion,
+      in_direccion_maps: url
+      
     }
     //--> Enviar peticion
     try {
@@ -141,33 +139,35 @@ const perfilDoctor = () => {
           router.push('/pages/usuario/miCuenta')
         }, 3000);
       }
-
+      
     } catch (error) {
       toast.current.show({ severity: 'error', summary: 'Error', detail: 'No se pudo modificar la información.', life: 3000 });
     }
     //--> Limpiar campos
-
+ 
   }
 
 
-
+  
 
   //----------------| Valor que regresará |----------------
   return (
     <Layout title="Modificar Perfil" description="Modificar perfil del usuario">
       <div className="grid">
         <div className="col-12">
-          <Toast ref={toast} />
+        <Toast ref={toast} />
           <div className="card">
             <div className="surface-card p-5 shadow-2 border-round flex-auto">
-              <div className="flex flex-column align-items-center flex-or">
-                <span className="font-medium text-900 mb-2">Foto de Perfil</span>
-
-                <Button
-                  icon="pi pi-pencil" // Agrega el icono de lápiz
-                  className=' p-button-rounded -mt-4 '
-                />
-              </div>
+              {/* <div className="flex flex-column align-items-center flex-or">
+            <span className="font-medium text-900 mb-2">Foto de Perfil</span>
+            
+            <Button
+              icon="pi pi-pencil" // Agrega el icono de lápiz
+              className=' p-button-rounded -mt-4 '
+            />
+          </div>
+           */}
+              
               <div className="text-900 font-semibold text-lg mt-3">Mi Perfil</div>
               <div className="p-divider p-component p-divider-horizontal p-divider-solid p-divider-left" role="separator">
                 <div className="p-divider-content"> </div>
